@@ -1,22 +1,18 @@
-// src/components/useFetchJobs.js
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-// Mock function to simulate fetching jobs
-const useFetchJobs = () => {
+const useFetchJobs = (url) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setTimeout(() => {
-      setData([
-        { id: 1, title: 'Frontend Developer', category: 'Frontend' },
-        { id: 2, title: 'Backend Developer', category: 'Backend' },
-        { id: 3, title: 'Full-stack Developer', category: 'Full-stack' }
-      ]);
-      setLoading(false);
-    }, 2000); // Simulate a 2-second delay for API call
-  }, []);
+    axios
+      .get("https://jsonplaceholder.typicode.com/posts") // Using a mock API for testing
+      .then((response) => setData(response.data))
+      .catch((error) => setError(error.message))
+      .finally(() => setLoading(false));
+  }, [url]);
 
   return { data, loading, error };
 };
